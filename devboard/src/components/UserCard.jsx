@@ -1,9 +1,20 @@
+// กำหนดสี avatar ตามตัวอักษรแรกของชื่อ
+function getAvatarColor(name) {
+    const code = name.toUpperCase().charCodeAt(0);
+    if (code >= 65 && code <= 71) return "#1e40af"; // A–G → น้ำเงิน
+    if (code >= 72 && code <= 78) return "#16a34a"; // H–N → เขียว
+    return "#7c3aed"; // O–Z → ม่วง
+}
+
+// UserCard — การ์ดแสดงข้อมูลสมาชิก พร้อม avatar ที่มีสีตามชื่อ
 function UserCard({ name, email }) {
-    // ดึงตัวอักษรแรกมาทำ avatar
+    // ดึงตัวอักษรแรกของแต่ละคำมาทำ avatar
     const initials = name
         .split(" ")
         .map((n) => n[0])
         .join("");
+
+    const avatarColor = getAvatarColor(name);
 
     return (
         <div
@@ -18,11 +29,12 @@ function UserCard({ name, email }) {
                 background: "white",
             }}
         >
+            {/* วงกลม avatar */}
             <div
                 style={{
                     width: "40px",
                     height: "40px",
-                    background: "#1e40af",
+                    background: avatarColor,
                     color: "white",
                     borderRadius: "50%",
                     display: "flex",
@@ -34,6 +46,8 @@ function UserCard({ name, email }) {
             >
                 {initials}
             </div>
+
+            {/* ชื่อและอีเมล */}
             <div>
                 <div style={{ fontWeight: "bold", color: "#2d3748" }}>{name}</div>
                 <div style={{ fontSize: "0.85rem", color: "#718096" }}>{email}</div>

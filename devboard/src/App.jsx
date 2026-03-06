@@ -1,9 +1,12 @@
+import { useState } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import PostList from "./components/PostList";
 import UserCard from "./components/UserCard";
+import AddPostForm from "./components/AddPostForm";
 
-const POSTS = [
+// ข้อมูลโพสต์เริ่มต้น
+const INITIAL_POSTS = [
   {
     id: 1,
     title: "React คืออะไร?",
@@ -26,16 +29,58 @@ const POSTS = [
   },
 ];
 
+// ข้อมูลสมาชิก
 const USERS = [
-  { id: 1, name: "สมชาย ใจดี", email: "somchai@dev.com" },
-  { id: 2, name: "สมหญิง รักเรียน", email: "somying@dev.com" },
-  { id: 3, name: "วิชาญ โค้ดเก่ง", email: "wichan@dev.com" },
+  { id: 1, name: "John Pork", email: "somchai@dev.com" },
+  { id: 2, name: "Tim Cheese", email: "somying@dev.com" },
+  { id: 3, name: "Brr Brr Patapim", email: "wichan@dev.com" },
 ];
 
 function App() {
+  // state: รายการโพสต์ทั้งหมด
+  const [posts, setPosts] = useState(INITIAL_POSTS);
+
+  // state: รายการโพสต์ที่ถูกใจ (อ่านค่าเริ่มต้นจาก localStorage)
+  const [favorites, setFavorites] = useState(
+    () => JSON.parse(localStorage.getItem("favorites") || "[]")
+  );
+
+  // สลับสถานะถูกใจ และบันทึกลง localStorage
+  function handleToggleFavorite(postId) {
+    setFavorites((prev) => {
+      const next = prev.includes(postId)
+        ? prev.filter((id) => id !== postId)
+        : [...prev, postId];
+      localStorage.setItem("favorites", JSON.stringify(next));
+      return next;
+    });
+  }
+
+  // เพิ่มโพสต์ใหม่ (ใช้ timestamp เป็น id ชั่วคราว)
+  function handleAddPost({ title, body }) {
+    const newPost = {
+      id: Date.now(),
+      title,
+      body,
+    };
+    setPosts((prev) => [newPost, ...prev]);
+  }
+
+  // ลบโพสต์ตาม id และเอาออกจาก favorites ด้วย
+  function handleDeletePost(postId) {
+    setPosts((prev) => prev.filter((post) => post.id !== postId));
+    setFavorites((prev) => {
+      const next = prev.filter((id) => id !== postId);
+      localStorage.setItem("favorites", JSON.stringify(next));
+      return next;
+    });
+  }
+
   return (
     <div>
-      <Navbar />
+      {/* แถบนำทางด้านบน */}
+      <Navbar favoriteCount={favorites.length} />
+
       <div
         style={{
           maxWidth: "900px",
@@ -46,12 +91,18 @@ function App() {
           gap: "2rem",
         }}
       >
-        {/* คอลัมน์ซ้าย: โพสต์ */}
+        {/* คอลัมน์ซ้าย: ฟอร์มเพิ่มโพสต์ + รายการโพสต์ */}
         <div>
-          <PostList posts={POSTS} />
+          <AddPostForm onAddPost={handleAddPost} />
+          <PostList
+            posts={posts}
+            favorites={favorites}
+            onToggleFavorite={handleToggleFavorite}
+            onDeletePost={handleDeletePost}
+          />
         </div>
 
-        {/* คอลัมน์ขวา: สมาชิก */}
+        {/* คอลัมน์ขวา: รายชื่อสมาชิก */}
         <div>
           <h2
             style={{
