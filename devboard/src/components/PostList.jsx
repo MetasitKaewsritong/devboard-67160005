@@ -1,21 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PostCard from "./PostCard";
-import PostCount from "./PostCount";
+import LoadingSpinner from "./LoadingSpinner";
 
-// PostList — แสดงรายการโพสต์ พร้อมระบบค้นหาและเรียงลำดับ
-function PostList({ posts, favorites, onToggleFavorite, onDeletePost }) {
-    const [search, setSearch] = useState("");
-    const [sortOrder, setSortOrder] = useState("desc");
+// PostList — ดึงโพสต์จาก API แล้วแสดงเป็นรายการ พร้อมช่องค้นหา
+function PostList({ favorites, onToggleFavorite }) {
+    const [posts, setPosts] = useState([]); // โพสต์ทั้งหมดที่ดึงมา
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [search, setSearch] = useState(""); // คำค้นหาสำหรับกรองโพสต์
 
-    // กรองโพสต์ตามคำค้นหา
+    useEffect(() => {
+        async function fetchPosts() {
+            try {
+                setLoading(true);
+                setError(null);
+                const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+                if (!res.ok) throw new Error("ดึงข้อมูลไม่สำเร็จ");
+                const data = await res.json();
+                setPosts(data.slice(0, 20)); // เอาแค่ 20 รายการแรก
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchPosts();
+    }, []); // [] = ทำครั้งเดียวตอน component mount
+
+    // กรองโพสต์ตามคำค้นหา (เทียบแบบไม่สนตัวพิมพ์)
     const filtered = posts.filter((post) =>
-        post.title.toLowerCase().includes(search.toLowerCase())
+        post.title.toLowerCase().includes(search.toLowerCase()),
     );
 
-    // เรียงลำดับตาม id (ใหม่สุด/เก่าสุด)
-    const sorted = [...filtered].sort((a, b) =>
-        sortOrder === "desc" ? b.id - a.id : a.id - b.id
-    );
+    if (loading) return <LoadingSpinner />;
+
+    if (error)
+        return (
+            <div
+                style={{
+                    padding: "1.5rem",
+                    background: "#fff5f5",
+                    border: "1px solid #fc8181",
+                    borderRadius: "8px",
+                    color: "#c53030",
+                }}
+            >
+                เกิดข้อผิดพลาด: {error}
+            </div>
+        );
 
     return (
         <div>
@@ -29,10 +61,6 @@ function PostList({ posts, favorites, onToggleFavorite, onDeletePost }) {
                 โพสต์ล่าสุด
             </h2>
 
-            {/* แสดงจำนวนโพสต์ทั้งหมด */}
-            <PostCount count={posts.length} />
-
-            {/* ช่องค้นหาโพสต์ */}
             <input
                 type="text"
                 placeholder="ค้นหาโพสต์..."
@@ -49,39 +77,18 @@ function PostList({ posts, favorites, onToggleFavorite, onDeletePost }) {
                 }}
             />
 
-            {/* ปุ่มสลับการเรียงลำดับ */}
-            <button
-                onClick={() => setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"))}
-                style={{
-                    background: "none",
-                    border: "1px solid #cbd5e0",
-                    borderRadius: "6px",
-                    padding: "0.4rem 0.75rem",
-                    cursor: "pointer",
-                    fontSize: "0.9rem",
-                    color: "#4a5568",
-                    marginBottom: "1rem",
-                }}
-            >
-                {sortOrder === "desc" ? "🔽 ใหม่สุดก่อน" : "🔼 เก่าสุดก่อน"}
-            </button>
-
-            {/* ข้อความเมื่อไม่พบโพสต์ */}
-            {sorted.length === 0 && (
+            {filtered.length === 0 && (
                 <p style={{ color: "#718096", textAlign: "center", padding: "2rem" }}>
                     ไม่พบโพสต์ที่ค้นหา
                 </p>
             )}
 
-            {/* แสดงรายการโพสต์ */}
-            {sorted.map((post) => (
+            {filtered.map((post) => (
                 <PostCard
                     key={post.id}
-                    title={post.title}
-                    body={post.body}
-                    isFavorite={favorites?.includes(post.id)}
-                    onToggleFavorite={() => onToggleFavorite?.(post.id)}
-                    onDeletePost={() => onDeletePost?.(post.id)}
+                    post={post}
+                    isFavorite={favorites.includes(post.id)}
+                    onToggleFavorite={() => onToggleFavorite(post.id)}
                 />
             ))}
         </div>

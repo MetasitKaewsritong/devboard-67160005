@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-// AddPostForm — ฟอร์มสำหรับเพิ่มโพสต์ใหม่ มีตัวนับตัวอักษรสำหรับหัวข้อ
+// AddPostForm — ฟอร์มสำหรับเพิ่มโพสต์ใหม่
 function AddPostForm({ onAddPost }) {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
@@ -30,35 +30,22 @@ function AddPostForm({ onAddPost }) {
                 เพิ่มโพสต์ใหม่
             </h3>
 
-            {/* ช่องกรอกหัวข้อ (จำกัด 100 ตัวอักษร) */}
+            {/* ช่องกรอกหัวข้อ */}
             <input
                 type="text"
                 placeholder="หัวข้อโพสต์"
                 value={title}
-                maxLength={100}
                 onChange={(e) => setTitle(e.target.value)}
                 style={{
                     width: "100%",
                     padding: "0.5rem",
-                    marginBottom: "0.25rem",
+                    marginBottom: "0.5rem",
                     border: "1px solid #cbd5e0",
                     borderRadius: "4px",
                     fontSize: "1rem",
                     boxSizing: "border-box",
                 }}
             />
-
-            {/* ตัวนับตัวอักษร — เปลี่ยนเป็นสีแดงเมื่อเหลือน้อยกว่า 10 ตัว */}
-            <div
-                style={{
-                    textAlign: "right",
-                    fontSize: "0.8rem",
-                    marginBottom: "0.5rem",
-                    color: 100 - title.length < 10 ? "#e53e3e" : "#a0aec0",
-                }}
-            >
-                {title.length}/100
-            </div>
 
             {/* ช่องกรอกเนื้อหาโพสต์ */}
             <textarea

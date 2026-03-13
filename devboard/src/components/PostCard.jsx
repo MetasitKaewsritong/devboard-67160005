@@ -1,5 +1,10 @@
-// PostCard — การ์ดแสดงโพสต์แต่ละรายการ พร้อมปุ่มถูกใจและลบ
-function PostCard({ title, body, isFavorite, onToggleFavorite, onDeletePost }) {
+import { useState } from "react";
+import CommentList from "./CommentList";
+
+// PostCard — การ์ดแสดงโพสต์ พร้อมปุ่มถูกใจและดูความคิดเห็น
+function PostCard({ post, isFavorite, onToggleFavorite }) {
+    const [showComments, setShowComments] = useState(false);
+
     return (
         <div
             style={{
@@ -10,24 +15,20 @@ function PostCard({ title, body, isFavorite, onToggleFavorite, onDeletePost }) {
                 background: "white",
             }}
         >
-            {/* หัวข้อโพสต์ */}
-            <h3 style={{ margin: "0 0 0.5rem", color: "#1e40af" }}>{title}</h3>
-
-            {/* เนื้อหาโพสต์ */}
+            <h3 style={{ margin: "0 0 0.5rem", color: "#1e40af" }}>{post.title}</h3>
             <p style={{ margin: "0 0 0.75rem", color: "#4a5568", lineHeight: 1.6 }}>
-                {body}
+                {post.body}
             </p>
 
-            {/* กลุ่มปุ่ม: ถูกใจ + ลบ */}
             <div style={{ display: "flex", gap: "0.5rem" }}>
-                {/* ปุ่มถูกใจ — สลับระหว่าง ❤️ กับ 🤍 */}
+                {/* ปุ่มถูกใจ */}
                 <button
                     onClick={onToggleFavorite}
                     style={{
                         background: "none",
                         border: "none",
                         cursor: "pointer",
-                        fontSize: "1.2rem",
+                        fontSize: "1rem",
                         padding: "0.25rem 0.5rem",
                         borderRadius: "4px",
                         color: isFavorite ? "#e53e3e" : "#a0aec0",
@@ -36,22 +37,25 @@ function PostCard({ title, body, isFavorite, onToggleFavorite, onDeletePost }) {
                     {isFavorite ? "❤️ ถูกใจแล้ว" : "🤍 ถูกใจ"}
                 </button>
 
-                {/* ปุ่มลบโพสต์ */}
+                {/* ปุ่มดูความคิดเห็น */}
                 <button
-                    onClick={onDeletePost}
+                    onClick={() => setShowComments((prev) => !prev)}
                     style={{
                         background: "none",
-                        border: "none",
+                        border: "1px solid #e2e8f0",
                         cursor: "pointer",
-                        fontSize: "1.2rem",
-                        padding: "0.25rem 0.5rem",
+                        fontSize: "0.9rem",
+                        padding: "0.25rem 0.75rem",
                         borderRadius: "4px",
-                        color: "#a0aec0",
+                        color: "#4a5568",
                     }}
                 >
-                    🗑️ ลบ
+                    {showComments ? "▲ ซ่อน" : "▼ ดูความคิดเห็น"}
                 </button>
             </div>
+
+            {/* แสดง comments เมื่อกด — fetch เกิดขึ้นตอนนี้ */}
+            {showComments && <CommentList postId={post.id} />}
         </div>
     );
 }
