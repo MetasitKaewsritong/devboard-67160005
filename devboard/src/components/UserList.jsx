@@ -8,6 +8,7 @@ function UserList() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // ดึง users ครั้งเดียวตอนเปิดหน้า profile
         async function fetchUsers() {
             try {
                 const res = await fetch("https://jsonplaceholder.typicode.com/users");

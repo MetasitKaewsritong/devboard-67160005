@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useFavorites } from "../context/FavoritesContext";
 
 function Navbar() {
+  // อ่าน favorites จาก context เพื่อแสดง badge จำนวนที่กดถูกใจ
   const { favorites } = useFavorites();
 
   return (
@@ -19,6 +20,7 @@ function Navbar() {
         <h1 style={{ margin: 0, fontSize: "1.5rem" }}>DevBoard</h1>
       </Link>
 
+      {/* ใช้ Link แทน <a> เพื่อเปลี่ยนหน้าแบบ client-side */}
       <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
         <Link to="/" style={{ color: "white", textDecoration: "none" }}>
           หน้าหลัก

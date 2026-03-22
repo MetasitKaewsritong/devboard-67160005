@@ -7,6 +7,7 @@ function CommentList({ postId }) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        // ดึง comments ตาม postId ที่ส่งเข้ามา (รองรับกรณีเปลี่ยนโพสต์)
         async function fetchComments() {
             try {
                 setLoading(true);

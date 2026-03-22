@@ -8,8 +8,10 @@ function AddPostForm({ onAddPost }) {
     // จัดการส่งฟอร์ม
     function handleSubmit(e) {
         e.preventDefault();
+        // กันเคสผู้ใช้กดส่งทั้งที่ยังไม่กรอก
         if (!title.trim() || !body.trim()) return; // ป้องกันส่งว่าง
 
+        // ส่งข้อมูลขึ้น parent (lifting state up)
         onAddPost({ title, body });
         setTitle(""); // เคลียร์ฟอร์มหลังส่ง
         setBody("");

@@ -7,6 +7,7 @@ const FavoritesContext = createContext();
 export function FavoritesProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
 
+  // toggle: ถ้ามีอยู่แล้วให้เอาออก, ถ้ายังไม่มีให้เพิ่มเข้า list
   function toggleFavorite(postId) {
     setFavorites((prev) =>
       prev.includes(postId)
@@ -24,5 +25,6 @@ export function FavoritesProvider({ children }) {
 
 // 3. Custom hook สำหรับใช้งาน context ง่าย ๆ
 export function useFavorites() {
+  // component ไหนเรียก hook นี้จะเข้าถึง { favorites, toggleFavorite } ได้
   return useContext(FavoritesContext);
 }

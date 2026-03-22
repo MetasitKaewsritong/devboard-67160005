@@ -8,11 +8,16 @@ import FavoritesPage from "./pages/FavoritesPage";
 
 function App() {
   return (
+    // ครอบทั้งแอปด้วย Context เพื่อให้ทุกหน้าจัดการ favorites ร่วมกันได้
     <FavoritesProvider>
+      {/* BrowserRouter อ่าน path จาก URL และ render หน้าแบบไม่ reload */}
       <BrowserRouter>
+        {/* Navbar วางนอก Routes เพื่อให้แสดงทุกหน้า */}
         <Navbar />
         <Routes>
+          {/* route หลักของแอป */}
           <Route path="/" element={<HomePage />} />
+          {/* dynamic route: /posts/3 -> id = 3 ใน PostDetailPage */}
           <Route path="/posts/:id" element={<PostDetailPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/favorites" element={<FavoritesPage />} />

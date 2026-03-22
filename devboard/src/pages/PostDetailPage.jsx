@@ -11,6 +11,7 @@ function PostDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // ดึงข้อมูลโพสต์ใหม่ทุกครั้งที่ id ใน URL เปลี่ยน
     async function fetchPost() {
       const res = await fetch(
         `https://jsonplaceholder.typicode.com/posts/${id}`,
@@ -24,6 +25,7 @@ function PostDetailPage() {
 
   if (loading) return <LoadingSpinner />;
 
+  // ถ้า post.id อยู่ใน favorites ให้ render ปุ่มเป็นสถานะ "ถูกใจแล้ว"
   const isFavorite = favorites.includes(post.id);
 
   return (

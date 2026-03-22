@@ -10,6 +10,7 @@ function PostList() {
     const [search, setSearch] = useState(""); // คำค้นหาสำหรับกรองโพสต์
 
     useEffect(() => {
+        // ดึงโพสต์ครั้งแรกตอน component mount
         async function fetchPosts() {
             try {
                 setLoading(true);
@@ -34,6 +35,7 @@ function PostList() {
 
     if (loading) return <LoadingSpinner />;
 
+    // fail-fast: ถ้าโหลดไม่สำเร็จไม่ต้อง render รายการ
     if (error)
         return (
             <div
@@ -84,6 +86,7 @@ function PostList() {
             )}
 
             {filtered.map((post) => (
+                // ส่งทั้ง object ไปที่ PostCard เพื่อให้ PostCard ตัดสินใจแสดงผลเอง
                 <PostCard key={post.id} post={post} />
             ))}
         </div>

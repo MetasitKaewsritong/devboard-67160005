@@ -4,8 +4,10 @@ import { useFavorites } from "../context/FavoritesContext";
 import CommentList from "./CommentList";
 
 function PostCard({ post }) {
+  // ใช้ context เดียวกันกับ Navbar/FavoritesPage เพื่อให้ state sync กันทั้งแอป
   const { favorites, toggleFavorite } = useFavorites();
   const isFavorite = favorites.includes(post.id);
+  // คุมการเปิด/ปิด comments ของการ์ดใบนี้เท่านั้น
   const [showComments, setShowComments] = useState(false);
 
   return (
@@ -23,6 +25,7 @@ function PostCard({ post }) {
           to={`/posts/${post.id}`}
           style={{ color: "#1e40af", textDecoration: "none" }}
         >
+          {/* คลิกหัวข้อเพื่อไปหน้ารายละเอียดโพสต์ */}
           {post.title}
         </Link>
       </h3>
@@ -32,6 +35,7 @@ function PostCard({ post }) {
 
       <div style={{ display: "flex", gap: "0.5rem" }}>
         <button
+          // ส่ง id เข้า context เพื่อ toggle favorite
           onClick={() => toggleFavorite(post.id)}
           style={{
             background: "none",
@@ -45,6 +49,7 @@ function PostCard({ post }) {
         </button>
 
         <button
+          // comments ถูก fetch เมื่อ CommentList ถูก render (on-demand)
           onClick={() => setShowComments((prev) => !prev)}
           style={{
             background: "none",

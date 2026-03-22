@@ -7,10 +7,12 @@ function FavoritesPage() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    // ถ้าไม่มี favorites ไม่ต้องยิง API
     if (favorites.length === 0) return;
 
     // ดึงเฉพาะโพสต์ที่ถูกใจ
     async function fetchFavoritePosts() {
+      // Promise.all ช่วยดึงหลายโพสต์พร้อมกันให้รอครบครั้งเดียว
       const results = await Promise.all(
         favorites.map((id) =>
           fetch(`https://jsonplaceholder.typicode.com/posts/${id}`).then((r) =>
@@ -23,6 +25,7 @@ function FavoritesPage() {
     fetchFavoritePosts();
   }, [favorites]);
 
+  // empty state: กรณีผู้ใช้ยังไม่ได้กดถูกใจโพสต์ใด
   if (favorites.length === 0) {
     return (
       <div
@@ -54,6 +57,7 @@ function FavoritesPage() {
       >
         ❤️ โพสต์ที่ถูกใจ ({favorites.length})
       </h2>
+      {/* render เฉพาะโพสต์ที่ถูกใจ และยกเลิกถูกใจได้จากหน้านี้ทันที */}
       {posts.map((post) => (
         <div
           key={post.id}
