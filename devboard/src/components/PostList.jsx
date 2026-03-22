@@ -5,7 +5,9 @@ import LoadingSpinner from "./LoadingSpinner";
 // PostList — ดึงโพสต์จาก API แล้วแสดงเป็นรายการ พร้อมช่องค้นหา
 function PostList() {
     const [posts, setPosts] = useState([]); // โพสต์ทั้งหมดที่ดึงมา
+    // loading ใช้คุม UX ระหว่างรอ API (ป้องกันหน้าว่างเฉย ๆ)
     const [loading, setLoading] = useState(true);
+    // error ใช้เก็บข้อความผิดพลาดจากการ fetch
     const [error, setError] = useState(null);
     const [search, setSearch] = useState(""); // คำค้นหาสำหรับกรองโพสต์
 
@@ -13,6 +15,7 @@ function PostList() {
         // ดึงโพสต์ครั้งแรกตอน component mount
         async function fetchPosts() {
             try {
+                // reset สถานะก่อนเริ่ม request ใหม่
                 setLoading(true);
                 setError(null);
                 const res = await fetch("https://jsonplaceholder.typicode.com/posts");
@@ -33,6 +36,7 @@ function PostList() {
         post.title.toLowerCase().includes(search.toLowerCase()),
     );
 
+    // early return: ระหว่างโหลดยังไม่ต้อง render เนื้อหาหลัก
     if (loading) return <LoadingSpinner />;
 
     // fail-fast: ถ้าโหลดไม่สำเร็จไม่ต้อง render รายการ
@@ -67,6 +71,7 @@ function PostList() {
                 type="text"
                 placeholder="ค้นหาโพสต์..."
                 value={search}
+                // controlled input: state เป็น source of truth
                 onChange={(e) => setSearch(e.target.value)}
                 style={{
                     width: "100%",
@@ -80,6 +85,7 @@ function PostList() {
             />
 
             {filtered.length === 0 && (
+                // empty state เมื่อผลค้นหาไม่ตรงกับโพสต์ใดเลย
                 <p style={{ color: "#718096", textAlign: "center", padding: "2rem" }}>
                     ไม่พบโพสต์ที่ค้นหา
                 </p>

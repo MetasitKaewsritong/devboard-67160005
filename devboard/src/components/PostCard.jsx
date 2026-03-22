@@ -6,6 +6,7 @@ import CommentList from "./CommentList";
 function PostCard({ post }) {
   // ใช้ context เดียวกันกับ Navbar/FavoritesPage เพื่อให้ state sync กันทั้งแอป
   const { favorites, toggleFavorite } = useFavorites();
+  // เช็คว่าโพสต์นี้อยู่ใน favorites หรือไม่ เพื่อนำไป render สี/ข้อความปุ่ม
   const isFavorite = favorites.includes(post.id);
   // คุมการเปิด/ปิด comments ของการ์ดใบนี้เท่านั้น
   const [showComments, setShowComments] = useState(false);
@@ -65,6 +66,7 @@ function PostCard({ post }) {
         </button>
       </div>
 
+      {/* conditional rendering: ยังไม่กด = ไม่ mount CommentList = ไม่ fetch */}
       {showComments && <CommentList postId={post.id} />}
     </div>
   );

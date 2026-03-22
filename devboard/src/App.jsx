@@ -6,6 +6,7 @@ import PostDetailPage from "./pages/PostDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import FavoritesPage from "./pages/FavoritesPage";
 
+// App คือ root component ที่รวม "Context + Router + Layout หลัก" ไว้จุดเดียว
 function App() {
   return (
     // ครอบทั้งแอปด้วย Context เพื่อให้ทุกหน้าจัดการ favorites ร่วมกันได้
@@ -14,6 +15,7 @@ function App() {
       <BrowserRouter>
         {/* Navbar วางนอก Routes เพื่อให้แสดงทุกหน้า */}
         <Navbar />
+        {/* Routes คือจุด mapping ระหว่าง path กับ page component */}
         <Routes>
           {/* route หลักของแอป */}
           <Route path="/" element={<HomePage />} />

@@ -5,6 +5,7 @@ const FavoritesContext = createContext();
 
 // 2. Provider component — ครอบ App ทั้งหมด
 export function FavoritesProvider({ children }) {
+  // favorites เก็บ postId ที่ผู้ใช้กดหัวใจไว้
   const [favorites, setFavorites] = useState([]);
 
   // toggle: ถ้ามีอยู่แล้วให้เอาออก, ถ้ายังไม่มีให้เพิ่มเข้า list
@@ -17,6 +18,7 @@ export function FavoritesProvider({ children }) {
   }
 
   return (
+    // value ที่ส่งให้ทั้งแอปใช้: ข้อมูล favorites + ฟังก์ชัน toggle
     <FavoritesContext.Provider value={{ favorites, toggleFavorite }}>
       {children}
     </FavoritesContext.Provider>

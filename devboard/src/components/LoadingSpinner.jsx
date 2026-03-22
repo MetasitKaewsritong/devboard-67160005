@@ -1,6 +1,7 @@
 // LoadingSpinner — แสดงขณะกำลังโหลดข้อมูล
 function LoadingSpinner() {
     return (
+        // wrapper จัด spinner ให้อยู่กึ่งกลางพื้นที่ที่เรียกใช้
         <div
             style={{
                 display: "flex",
@@ -11,6 +12,7 @@ function LoadingSpinner() {
         >
             <div
                 style={{
+                    // วงกลม spinner: ใช้ border + animation แทนภาพ gif
                     width: "40px",
                     height: "40px",
                     border: "4px solid #e2e8f0",
@@ -20,6 +22,7 @@ function LoadingSpinner() {
                     animation: "spin 0.8s linear infinite",
                 }}
             />
+            {/* ประกาศ keyframes ใน component เพื่อให้ไฟล์นี้ใช้งานได้ทันที */}
             <style>{`
         @keyframes spin {
           to { transform: rotate(360deg); }

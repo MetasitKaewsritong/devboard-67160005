@@ -1,5 +1,6 @@
 import UserList from "../components/UserList";
 
+// ProfilePage — หน้าสมาชิกของระบบ
 function ProfilePage() {
   return (
     <div style={{ maxWidth: "500px", margin: "2rem auto", padding: "0 1rem" }}>

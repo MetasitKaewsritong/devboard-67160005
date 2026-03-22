@@ -6,6 +6,7 @@ function Navbar() {
   const { favorites } = useFavorites();
 
   return (
+    // nav หลักของแอป: มี brand + ลิงก์นำทาง + badge favorites
     <nav
       style={{
         background: "#1e40af",
@@ -33,6 +34,7 @@ function Navbar() {
           style={{
             color: "white",
             textDecoration: "none",
+            // ถ้ามี favorites ให้แสดงพื้นหลังแดงเหมือน badge
             background: favorites.length > 0 ? "#e53e3e" : "transparent",
             padding: "0.25rem 0.75rem",
             borderRadius: "20px",

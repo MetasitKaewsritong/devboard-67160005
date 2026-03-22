@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useFavorites } from "../context/FavoritesContext";
 
+// FavoritesPage — แสดงเฉพาะโพสต์ที่ผู้ใช้กดถูกใจไว้
 function FavoritesPage() {
+  // favorites เป็น array ของ postId, toggleFavorite ใช้ลบ/เพิ่มได้ทุกหน้า
   const { favorites, toggleFavorite } = useFavorites();
+  // posts เก็บข้อมูลโพสต์จริงที่ดึงตาม id ใน favorites
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -20,9 +23,11 @@ function FavoritesPage() {
           ),
         ),
       );
+      // เมื่อดึงครบทุกโพสต์แล้วค่อย setState ครั้งเดียว
       setPosts(results);
     }
     fetchFavoritePosts();
+    // refetch ทุกครั้งที่ favorites เปลี่ยน เพื่อให้รายการหน้านี้ทันสมัย
   }, [favorites]);
 
   // empty state: กรณีผู้ใช้ยังไม่ได้กดถูกใจโพสต์ใด
@@ -79,6 +84,7 @@ function FavoritesPage() {
           </h3>
           <p style={{ margin: "0 0 0.75rem", color: "#4a5568" }}>{post.body}</p>
           <button
+            // คลิกจากหน้านี้ก็ใช้ toggle เดียวกันกับทั้งแอป
             onClick={() => toggleFavorite(post.id)}
             style={{
               background: "none",

@@ -1,6 +1,7 @@
 // UserCard — การ์ดแสดงข้อมูลสมาชิก พร้อม avatar
 function UserCard({ name, email }) {
     // ดึงตัวอักษรแรกของแต่ละคำมาทำ avatar
+    // เช่น "Leanne Graham" -> "LG"
     const initials = name
         .split(" ")
         .map((n) => n[0])
@@ -39,7 +40,9 @@ function UserCard({ name, email }) {
 
             {/* ชื่อและอีเมล */}
             <div>
+                {/* ชื่อแสดงเป็นข้อมูลหลักของการ์ด */}
                 <div style={{ fontWeight: "bold", color: "#2d3748" }}>{name}</div>
+                {/* อีเมลเป็นข้อมูลรอง ใช้ขนาดเล็ก/สีอ่อนกว่า */}
                 <div style={{ fontSize: "0.85rem", color: "#718096" }}>{email}</div>
             </div>
         </div>

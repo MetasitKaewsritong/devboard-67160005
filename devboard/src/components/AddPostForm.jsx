@@ -2,6 +2,7 @@ import { useState } from "react";
 
 // AddPostForm — ฟอร์มสำหรับเพิ่มโพสต์ใหม่
 function AddPostForm({ onAddPost }) {
+    // state ของ controlled form
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
 
@@ -20,6 +21,7 @@ function AddPostForm({ onAddPost }) {
     return (
         <form
             onSubmit={handleSubmit}
+            // ใช้ onSubmit ที่ form เพื่อรองรับทั้งคลิกปุ่มและกด Enter
             style={{
                 border: "1px solid #e2e8f0",
                 borderRadius: "8px",
@@ -37,6 +39,7 @@ function AddPostForm({ onAddPost }) {
                 type="text"
                 placeholder="หัวข้อโพสต์"
                 value={title}
+                // controlled input: ทุกตัวอักษรถูกเก็บใน state
                 onChange={(e) => setTitle(e.target.value)}
                 style={{
                     width: "100%",
@@ -53,6 +56,7 @@ function AddPostForm({ onAddPost }) {
             <textarea
                 placeholder="เนื้อหาโพสต์"
                 value={body}
+                // controlled textarea แบบเดียวกับ title
                 onChange={(e) => setBody(e.target.value)}
                 rows={3}
                 style={{

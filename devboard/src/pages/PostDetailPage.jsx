@@ -4,8 +4,10 @@ import { useFavorites } from "../context/FavoritesContext";
 import CommentList from "../components/CommentList";
 import LoadingSpinner from "../components/LoadingSpinner";
 
+// PostDetailPage — แสดงโพสต์เดี่ยวจาก URL /posts/:id พร้อมปุ่ม favorite และ comments
 function PostDetailPage() {
   const { id } = useParams(); // ดึง id จาก URL เช่น /posts/3 → id = "3"
+  // ใช้ favorites เดียวกับหน้าอื่น เพื่อให้กดหัวใจแล้ว sync ทันที
   const { favorites, toggleFavorite } = useFavorites();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,6 +19,7 @@ function PostDetailPage() {
         `https://jsonplaceholder.typicode.com/posts/${id}`,
       );
       const data = await res.json();
+      // เก็บโพสต์ที่โหลดมา แล้วปิด loading
       setPost(data);
       setLoading(false);
     }
@@ -47,6 +50,7 @@ function PostDetailPage() {
         <p style={{ color: "#4a5568", lineHeight: 1.8 }}>{post.body}</p>
 
         <button
+          // ใช้ id เดียวกับ PostCard/FavoritesPage เพื่อให้ behavior สม่ำเสมอ
           onClick={() => toggleFavorite(post.id)}
           style={{
             background: "none",
