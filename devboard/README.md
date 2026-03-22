@@ -1,16 +1,42 @@
-# React + Vite
+# DevBoard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DevBoard is a React + Vite single-page app built across 4 progressive tasks:
 
-Currently, two official plugins are available:
+- Task 1: Components, props, list rendering
+- Task 2: State, events, search, favorites, add post form
+- Task 3: API integration with loading/error handling
+- Task 4: Multi-page routing with React Router + favorites via Context + Vercel deploy
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
 
-## React Compiler
+- React 19
+- Vite 5
+- React Router DOM 6
+- JSONPlaceholder API
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run Locally
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+App runs at `http://localhost:5173`
+
+## Build / Lint
+
+```bash
+npm run build
+npm run lint
+```
+
+## Routes
+
+- `/` Home page (posts + add post form)
+- `/posts/:id` Post detail page
+- `/profile` Members page
+- `/favorites` Favorite posts page
+
+## Deployment Note (Vercel SPA Routing)
+
+This project includes Vercel rewrites so direct URL access (for example `/profile`) resolves to `index.html`, then React Router handles the page route.
